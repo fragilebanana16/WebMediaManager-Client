@@ -1,0 +1,2 @@
+# redux clear cache
+window.localStorage.clear()

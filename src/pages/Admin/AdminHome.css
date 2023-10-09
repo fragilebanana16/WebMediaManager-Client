@@ -1,0 +1,16 @@
+.home{
+    flex: 5;
+}
+
+.homeWidgets{
+    display: flex;
+}
+
+.homeCharts{
+    margin: 0px 20px;
+}
+
+.homeTitleContent{
+    display: flex;
+
+}
