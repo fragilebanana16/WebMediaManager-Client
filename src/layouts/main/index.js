@@ -7,7 +7,7 @@ import { Typography, } from "@mui/material";
 const MainLayout = () => {
   const { isLoggedIn } = useSelector((state) => state.auth);
   if(isLoggedIn){
-    return <Navigate to="/app">
+    return <Navigate to="/">
     </Navigate>
   }
 

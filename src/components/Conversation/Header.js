@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect, useMemo } from "react";
 import { Box, IconButton, Stack, Divider, Switch, InputAdornment,TextField, Badge, Avatar, Typography } from "@mui/material";
 import { flexbox } from "@mui/system";
 import { faker } from "@faker-js/faker";
@@ -8,13 +8,23 @@ import {    CaretDown, MagnifyingGlass, Phone, VideoCamera, LinkSimple,    Paper
 import StyledBadge from "../StyledBadge";
 import { ToggleSidebar } from "../../redux/slices/app";
 import { useDispatch, useSelector } from "react-redux";
+import { socket } from "../../utils/socket";
 
 const Header = () => {
     const theme = useTheme();
+    const [typingStatus, setTypingStatus] = useState("")
     const dispatch = useDispatch();
     const { current_conversation } = useSelector(
         (state) => state.conversation.direct_chat
       );
+
+      useEffect(()=> {
+        socket.on("typingResponse", data => {
+            console.log("time");
+                setTypingStatus(data);
+                    })
+      }, [socket])
+
     return (
             <Box p={2} sx={{ width: "100%", 
             backgroundColor: theme.palette.mode === "light" ? "#F8FAFF" : 
@@ -56,6 +66,10 @@ const Header = () => {
                             <Typography variant="caption">Online</Typography>
                         </Stack>
 
+                    </Stack>
+
+                    <Stack>
+                    <Typography variant="caption">{typingStatus}</Typography>
                     </Stack>
                     {/* right icon  */}
                     <Stack

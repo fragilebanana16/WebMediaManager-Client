@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { useTheme, styled } from "@mui/material/styles";
-import { Box, IconButton, Stack, Divider, Switch, Menu, MenuItem } from "@mui/material";
+import { Box, IconButton, Stack, Divider, Switch, Menu, MenuItem, Typography } from "@mui/material";
 import Logo from "../../assets/Images/logo.ico"
 import { Nav_Buttons, Profile_Menu, Nav_Setting } from "../../data";
 import { Gear, Aperture } from "phosphor-react";
 import useSettings from "../../hooks/useSettings";
 import AntSwitch from "../../components/AntSwitch";
 import { useNavigate } from "react-router-dom"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { LogoutUser } from "../../redux/slices/auth";
 const SideBar = () => {
   const theme = useTheme();
@@ -57,7 +57,7 @@ const SideBar = () => {
         break;
     }
   };
-
+  const { name } = useSelector((state) => state.app.user);
   return (
     <>
       <Box p={2} sx={{
@@ -69,6 +69,7 @@ const SideBar = () => {
           justifyContent="space-between">
           <Stack spacing={4} alignItems="center">
             {/* avatar */}
+          <Stack spacing={0.5} alignItems="center">
             <Box sx={{
               backgroundColor: 'transparent',
               height: 64, width: 64, borderRadius: 1.5,
@@ -85,12 +86,16 @@ const SideBar = () => {
                 position: 'absolute',
                 left: 72,
                 height: 12, width: 12, borderRadius: 1.5,
-              }}></Box>
+              }}>
+
+              </Box>
               <img src={Logo} alt={"Chat App Logo"}
                 style={{ borderRadius: "10px", border: '2px solid rgba(255, 255, 255, 1)' }}
               />
-
             </Box>
+            <Typography variant="subtitle2">{name}</Typography>
+            </Stack>
+
             {/* avatar click menu */}
             <Menu
               id="basic-menu"

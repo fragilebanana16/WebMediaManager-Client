@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Box, IconButton, Stack, Divider, Switch, Tooltip, Fab, InputAdornment, TextField, Badge, Avatar, Typography } from "@mui/material";
 import { useTheme, styled } from "@mui/material/styles";
 import data from '@emoji-mart/data';
@@ -45,12 +45,42 @@ const Actions = [
     },
 ];
 
+
+const handleTyping = (typingStatus) => {
+    socket.emit("typing", typingStatus)
+}
+
+
+
 const ChatInput = ({ openPicker,
     setOpenPicker,
     setValue,
     value,
-    inputRef }) => {
+    inputRef,
+    onSendMsg,
+    name }) => {
     const [openActions, setOpenActions] = useState(false);
+  
+    var typing = false;
+var timeout = undefined;
+
+function timeoutFunction(){
+  typing = false;
+  handleTyping("")
+}
+
+function onKeyDownNotEnter(typingStatus){
+  if(typing == false) {
+    typing = true
+    handleTyping(typingStatus)
+    timeout = setTimeout(timeoutFunction, 2000);
+  } else {
+    clearTimeout(timeout);
+    timeout = setTimeout(timeoutFunction, 2000);
+  }
+
+}
+
     return (
         <StyledInput fullWidth placeholder="Write a message" variant="filled"
             inputRef={inputRef}
@@ -58,6 +88,17 @@ const ChatInput = ({ openPicker,
             onChange={(event) => {
                 setValue(event.target.value);
             }}
+            onKeyDown={
+                (e) => {
+                    var typingStatus = `${name} is typing`;
+                    onKeyDownNotEnter(typingStatus);
+                    if (e.key === "Enter") {
+                        e.preventDefault();
+                        onSendMsg();
+                    }
+                }
+            }
+ 
             InputProps={{
                 disableUnderline: true,
                 startAdornment: (
@@ -132,6 +173,7 @@ const Footer = () => {
     const [value, setValue] = useState("");
     const inputRef = useRef(null);
     const { sideBar, room_id } = useSelector((state) => state.app);
+    const { name } = useSelector((state) => state.app.user);
     const { current_conversation } = useSelector(
         (state) => state.conversation.direct_chat
     );
@@ -152,6 +194,19 @@ const Footer = () => {
             input.selectionStart = input.selectionEnd = selectionStart + 1;
         }
     }
+
+    const onSendMsg = () => {
+        console.log("client send button click." + "current_conversation:" + JSON.stringify(current_conversation));
+        socket.emit("text_message", {
+            message: linkify(value),
+            conversation_id: room_id,
+            from: user_id,
+            to: current_conversation.user_id,
+            type: containsUrl(value) ? "Link" : "Text",
+        });
+
+        setValue("")
+    };
 
     return (
         <Box p={2} sx={{
@@ -175,22 +230,15 @@ const Footer = () => {
                         setValue={setValue}
                         openPicker={openPicker}
                         setOpenPicker={setOpenPicker}
+                        onSendMsg={onSendMsg}
+                        name={name}
                     />
                 </Stack>
 
                 <Box p={2} sx={{ height: 48, width: 48, backgroundColor: theme.palette.primary.main, borderRadius: 1.5 }}>
                     <Stack sx={{ height: "100%", width: "100%", alignItems: "center", justifyContent: "center" }}>
                         <IconButton
-                            onClick={() => {
-                                console.log("client send button click." + "current_conversation:"+ current_conversation);
-                                socket.emit("text_message", {
-                                    message: linkify(value),
-                                    conversation_id: room_id,
-                                    from: user_id,
-                                    to: current_conversation.user_id,
-                                    type: containsUrl(value) ? "Link" : "Text",
-                                });
-                            }}
+                            onClick={onSendMsg}
                         >
                             <PaperPlaneTilt color="#fff" />
                         </IconButton>

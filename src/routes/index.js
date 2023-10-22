@@ -77,7 +77,7 @@ export default function Router() {
       path: "/chat",
       element: <ChatDashboardLayout />,
       children: [
-        { element: <Navigate to="app" replace />, index: true },
+        { element: <Navigate to="app"  />, index: true },
         { path: "app", element: <ChatApp /> },
         { path: "settings", element: <Settings /> },
         { path: "group", element: <GroupPage /> },
