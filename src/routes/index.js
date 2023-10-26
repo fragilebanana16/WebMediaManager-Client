@@ -77,8 +77,9 @@ export default function Router() {
       path: "/chat",
       element: <ChatDashboardLayout />,
       children: [
-        { element: <Navigate to="app"  />, index: true },
+        { element: <Navigate to="app" replace />, index: true },
         { path: "app", element: <ChatApp /> },
+        { path: "friends", element: <Friends /> },
         { path: "settings", element: <Settings /> },
         { path: "group", element: <GroupPage /> },
         { path: "call", element: <CallPage /> },
@@ -128,6 +129,10 @@ const ResetPasswordPage = Loadable(
 
 const NewPasswordPage = Loadable(
   lazy(() => import("../pages/auth/NewPassword")),
+);
+
+const Friends = Loadable(
+  lazy(() => import("../pages/dashboard/Friends")),
 );
 
 const Settings = Loadable(

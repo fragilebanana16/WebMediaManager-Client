@@ -9,14 +9,14 @@ import Chats from "./Chats";
 import StarredMessages from "../../components/StarredMessages"
 import Media from "../../components/SharedMessages";
 import NoChat from "../../assets/Illustration/NoChat";
-import SideBar from "../../layouts/chatDashboard/SideBar"
+import ChatSideBar from "../../layouts/chatDashboard/ChatSideBar"
 const ChatApp = () => {
   const theme = useTheme();
   const { sideBar, room_id, chat_type } = useSelector((state) => state.app);
   console.log("Current roomid:" + room_id);
   return (
     <Stack direction={"row"} sx={{ width: "100%" }}>
-      <SideBar></SideBar>
+      <ChatSideBar/>
       {/* left chat */}
       <Chats />
       {/* conversions */}

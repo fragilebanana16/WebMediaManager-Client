@@ -14,6 +14,7 @@ const Chats = () => {
     const dispatch = useDispatch();
     const theme = useTheme();
     const [openDialog, setOpenDialog] = useState(false);
+    const [filterOnloneConversations, setFilterOnloneConversations] = useState();
     const {conversations} = useSelector((state) => state.conversation.direct_chat);
     useEffect(() => {
         socket.emit("get_direct_conversations", { user_id }, (data) => {
@@ -23,6 +24,28 @@ const Chats = () => {
         });
       }, []);
 
+
+    useEffect(()=>{
+        socket.on("online_users", (onlineUsers) => {
+            console.log("onlineUsers: " +  JSON.stringify(onlineUsers));
+            var onlineUserIDs = onlineUsers.map((user) => user.userID);
+              console.log("onlineUserIDs: " +  JSON.stringify(onlineUserIDs));
+              console.log("conversations: " +  JSON.stringify(conversations));
+            
+
+              // [TODO]modify online prop to online or offline according to socket online users?
+              
+            //   let newArray = conversations.slice();
+            //   newArray = newArray.map(function(x) { 
+            //     x.online = false; 
+            //     return x
+            //   });
+   
+            //   conversations.findIndex(x => x.id == item.id);
+            // const onlineUserWithConversation = conversations.filter(value => onlineUserIDs.includes(value.id));
+            // console.log("onlineUserWithConversation: " +  JSON.stringify(onlineUserWithConversation));
+          });
+    })
 
     const handleCloseDialog = () => {
         setOpenDialog(false);

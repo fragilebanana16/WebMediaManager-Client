@@ -28,7 +28,7 @@ const Conversation = () => {
             {/* ChatHeader */}
             <Header>
             </Header>
-            {/* msg */}
+            {/* msg  body*/}
             <Box 
             ref={messageListRef}
             width={"100%"}

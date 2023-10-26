@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Outlet } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import { useTheme, styled } from "@mui/material/styles";
 import { Box, IconButton, Stack, Divider, Switch, Menu, MenuItem, Typography } from "@mui/material";
 import Logo from "../../assets/Images/logo.ico"
@@ -10,7 +10,8 @@ import AntSwitch from "../../components/AntSwitch";
 import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
 import { LogoutUser } from "../../redux/slices/auth";
-const SideBar = () => {
+import { string } from "prop-types";
+const ChatSideBar = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [selected, setSelected] = useState(0);
@@ -29,12 +30,14 @@ const SideBar = () => {
   const getPath = (index) => {
     switch (index) {
       case 0:
-        return "/app";
+        return "/chat/app";
       case 1:
-        return "/group";
+        return "/chat/friends";
       case 2:
-        return "/call";
+        return "/group";
       case 3:
+        return "/call";
+      case 4:
         return "/settings";
       default:
         break;
@@ -58,6 +61,14 @@ const SideBar = () => {
     }
   };
   const { name } = useSelector((state) => state.app.user);
+  const loc = useLocation()
+  useEffect(()=> {
+    console.log("location" + JSON.stringify(loc));
+    if (loc && loc.state && loc.state.selectedIndex) {
+      setSelected(loc.state.selectedIndex);
+    }
+  }, []);
+
   return (
     <>
       <Box p={2} sx={{
@@ -141,11 +152,14 @@ const SideBar = () => {
               {Nav_Buttons.map((el) =>
                 <Box p={1} key={el.index} sx={{
                   backgroundColor:
-                    selected === el.index ? theme.palette.primary.darker : 'transparent', borderRadius: 1.5,
+                  selected === el.index ? theme.palette.primary.darker : 'transparent', borderRadius: 1.5,
                 }}>
                   <IconButton onClick={() => {
-                    setSelected(el.index);
-                    navi(getPath(el.index));
+                    navi(getPath(el.index),{
+                    state: {
+                      selectedIndex: el.index,
+      }   }   );
+
                   }}
                     sx={{
                       width: "max-content", color:
@@ -168,7 +182,7 @@ const SideBar = () => {
                 selected === 3 ? theme.palette.primary.darker : 'transparent', borderRadius: 1.5,
             }}>
               <IconButton onClick={() => {
-                setSelected(3);
+                // setSelected(3);
                 navi("/settings");
               }} sx={{
                 width: "max-content", color:
@@ -189,7 +203,7 @@ const SideBar = () => {
               borderRadius: 1.5,
             }}>
               <IconButton onClick={() => {
-                setSelected(4);
+                // setSelected(4);
                 navi("/settings");
               }} sx={{
                 width: "max-content",
@@ -207,4 +221,4 @@ const SideBar = () => {
   );
 };
 
-export default SideBar;
+export default ChatSideBar;
