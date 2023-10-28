@@ -43,7 +43,6 @@ const slice = createSlice({
     updateUser(state, action) {
       state.user = action.payload.user;
     },
-
     // Toggle Sidebar
     toggleSideBar(state, action) {
       state.sideBar.open = !state.sideBar.open;
@@ -309,3 +308,4 @@ export const UpdateUserProfile = (formValues) => {
       });
   };
 };
+

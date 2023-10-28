@@ -45,7 +45,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-const ChatElement = ({ img, name, msg, time, unread, online, id }) => {
+const ChatElement = ({ img, name, msg, time, unread, online, id, isOnline}) => {
   const dispatch = useDispatch();
   // const {room_id} = useSelector((state) => state.app);
   const selectedChatId = 1//room_id?.toString();
@@ -76,7 +76,7 @@ const ChatElement = ({ img, name, msg, time, unread, online, id }) => {
         
         <Stack direction="row" spacing={2} alignItems="center">
           {/* Avatar */}
-          {online ? (
+          {isOnline ? (
             <StyledBadge
               overlap="circular"
               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}

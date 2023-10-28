@@ -16,6 +16,9 @@ const Chats = () => {
     const [openDialog, setOpenDialog] = useState(false);
     const [filterOnloneConversations, setFilterOnloneConversations] = useState();
     const {conversations} = useSelector((state) => state.conversation.direct_chat);
+    // const {onlineUsers} = useSelector((state) => state.app.onlineUsers);
+    const [onlineUserIDs, setOnlineUserIDs] = useState([]);
+
     useEffect(() => {
         socket.emit("get_direct_conversations", { user_id }, (data) => {
         //   console.log(data); // this data is the list of conversations
@@ -24,28 +27,32 @@ const Chats = () => {
         });
       }, []);
 
+      useEffect(() => {
 
-    useEffect(()=>{
-        socket.on("online_users", (onlineUsers) => {
-            console.log("onlineUsers: " +  JSON.stringify(onlineUsers));
-            var onlineUserIDs = onlineUsers.map((user) => user.userID);
-              console.log("onlineUserIDs: " +  JSON.stringify(onlineUserIDs));
-              console.log("conversations: " +  JSON.stringify(conversations));
-            
+        console.log("Chat use effect excute...");
+        socket.emit("get_online_users",  (data) => {
+          var onlineUseridsData = data.map((user) => user.userID);
+          setOnlineUserIDs(onlineUseridsData)
+        });
 
-              // [TODO]modify online prop to online or offline according to socket online users?
-              
-            //   let newArray = conversations.slice();
-            //   newArray = newArray.map(function(x) { 
-            //     x.online = false; 
-            //     return x
-            //   });
-   
-            //   conversations.findIndex(x => x.id == item.id);
-            // const onlineUserWithConversation = conversations.filter(value => onlineUserIDs.includes(value.id));
-            // console.log("onlineUserWithConversation: " +  JSON.stringify(onlineUserWithConversation));
+        
+        socket.on("user_disconnected", (user_id) => {
+            console.log("user_disconnected before we have "+ onlineUserIDs.length+ " online user"); 
+            setOnlineUserIDs(onlineUserIDs.filter(id => id !== user_id))
+            let nowUsers = onlineUserIDs.filter(id => id !== user_id)
+            console.log("user_disconnected now we have "+ nowUsers.length+ " online user:" + nowUsers); 
           });
-    })
+
+          socket.on("user_connected", ({userSocketID, userID}) => {
+            if (userSocketID === socket.id) {
+                return; // its myself no need to update
+            }
+            setOnlineUserIDs( prevState => [...prevState, userID]);
+            
+            console.log("user_connected:" + userID); 
+          });
+
+      }, []);
 
     const handleCloseDialog = () => {
         setOpenDialog(false);
@@ -139,7 +146,7 @@ const Chats = () => {
                                 return <ChatElement key={el.id} {...el} />;
                             })} */}
                             {conversations.filter((el) => !el.pinned).map((el, idx) => {
-                                return <ChatElement key={el.id} {...el} />;
+                                return <ChatElement key={el.id} {...el} isOnline={onlineUserIDs?.includes(el.user_id)}/>;
                             })}
                         </Stack>
 
