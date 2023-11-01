@@ -11,6 +11,7 @@ const ChatDashboardLayout = () => {
   const { isLoggedIn } = useSelector((state) => state.auth);
   // const {user_id} = useSelector((state) => state.auth);
   const user_id = window.localStorage.getItem("user_id");
+  const {name} = useSelector((state) => state.app.user);
   const theme = useTheme();
   const [selected, setSelected] = useState(0);
   const { onToggleMode } = useSettings();
@@ -35,7 +36,7 @@ const ChatDashboardLayout = () => {
       // window.onload();
 
       if (!socket) {
-        connectSocket(user_id);
+        connectSocket(user_id, name);
       }
 
       // socket.on("audio_call_notification", (data) => {

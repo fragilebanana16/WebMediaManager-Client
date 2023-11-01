@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../utils/axios";
 import { showSnackbar } from "./app";
-
+import { BASE_URL } from "../../config";
 // ----------------------------------------------------------------------
 
 const initialState = {
@@ -116,7 +116,6 @@ export function ForgotPassword(formValues) {
       });
   };
 }
-
 
 export function LoginUser(formValues) {
   return async (dispatch, getState) => {
