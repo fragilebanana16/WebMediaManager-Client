@@ -128,6 +128,7 @@ export function LoginUser(formValues) {
     // })
     
     // 20231102 原因竟然是localhost的问题，axios实例使用的是ip地址，ip和localhost区别？？？
+    // wlan登录需要设置为ip，设为localhost仅为测试session，跨域session仍是个问题
     await axios.post("http://localhost:3001/auth/login",
         {
           ...formValues,
