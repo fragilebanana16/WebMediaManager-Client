@@ -13,7 +13,7 @@ import { Eye, EyeSlash } from "phosphor-react";
 import { LoginUser } from "../../redux/slices/auth";
 import { useDispatch, useSelector } from "react-redux";
 // ----------------------------------------------------------------------
-import axiosInstance from "../../utils/axios";
+import axios from "axios";
 export default function AuthLoginForm() {
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
@@ -45,31 +45,33 @@ export default function AuthLoginForm() {
 
   const onSubmit = async (data) => {
     try {
-      //axios未设置对，withcreditial也设置了，但就是无法发送session数据
-      let trySessionLogin = await fetch(`http://localhost:3001/auth/login`, {
+
+      // 20231101 axios未设置对，withcreditial也设置了，但就是无法发送session数据，所以底下的登录也无法发送session和fetch共享
+      let trySessionLogin = await fetch(`http://192.168.0.105:3001/auth/trylogin`, {
         method: "post",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
-      })      .catch(err => {
-        return false;
       })
-      .then(r => {
-        if (!r || r.status >= 400) {
+        .catch(err => {
           return false;
-        }
+        })
+        .then(r => {
+          if (!r || r.status >= 400) {
+            return false;
+          }
 
-        console.log("session login:", r)
-        console.log("session login success")
-        return true;
-      });
+          console.log("session login:", r)
+          console.log("session login success")
+          return true;
+        });
 
       console.log(trySessionLogin);
-      if(!trySessionLogin){
+      if (!trySessionLogin) {
         dispatch(LoginUser(data));
       }
-      
+
     } catch (error) {
       console.error(error);
       reset();

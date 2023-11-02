@@ -3,9 +3,7 @@ import axios from 'axios';
 import { BASE_URL } from '../config';
 
 // ----------------------------------------------------------------------
-
-const axiosInstance = axios.create({ baseURL: BASE_URL ,withCredentials: true,});
-
+const axiosInstance = axios.create({ withCredentials: true,baseURL: BASE_URL ,});
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) =>  

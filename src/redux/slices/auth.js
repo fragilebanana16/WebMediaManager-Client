@@ -121,14 +121,22 @@ export function LoginUser(formValues) {
   return async (dispatch, getState) => {
     // Make API call here
     dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
-    await axios.post("/auth/login",
+    // await axios("http://localhost:3001/auth/test", {
+    //   method: "post",
+    //   data: {...formValues},
+    //   withCredentials: true
+    // })
+    
+    // 20231102 原因竟然是localhost的问题，axios实例使用的是ip地址，ip和localhost区别？？？
+    await axios.post("http://localhost:3001/auth/login",
         {
           ...formValues,
         },
         {
+          withCredentials: true,
           headers: {
-            "Content-Type": "application/json",
-          },
+              'Content-Type': 'application/json'
+          }
         }
       )
       .then(function (response) {
