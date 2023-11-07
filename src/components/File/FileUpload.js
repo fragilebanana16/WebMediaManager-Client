@@ -390,7 +390,6 @@ const FileUpload = () => {
           onupdatefiles={setFiles}
           allowMultiple={true}
           maxFiles={30}
-          // server='http://192.168.0.107:3001/file/process'
           server={{
             url: `${BASE_URL}/file`,
             timeout: 7000,

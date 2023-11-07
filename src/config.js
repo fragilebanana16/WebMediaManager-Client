@@ -4,7 +4,7 @@ import { enUS, frFR, zhCN, viVN, arSD } from '@mui/material/locale';
 // routes
 import { PATH_DASHBOARD } from "./routes/paths";
 // no https, just http
-export const BASE_URL = "http://192.168.0.105:3001";
+export const BASE_URL = "http://192.168.0.106:3001";
 
 export const defaultSettings = {
   themeMode: "light",

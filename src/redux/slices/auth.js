@@ -60,11 +60,11 @@ export function NewPassword(formValues) {
       .then(function (response) {
         console.log(response);
         dispatch(
-            slice.actions.logIn({
-              isLoggedIn: true,
-              // token: response.data.token,
-            })
-          );
+          slice.actions.logIn({
+            isLoggedIn: true,
+            // token: response.data.token,
+          })
+        );
         // dispatch(
         //   showSnackbar({ severity: "success", message: response.data.message })
         // );
@@ -117,6 +117,52 @@ export function ForgotPassword(formValues) {
   };
 }
 
+export function TryLoginWithSession(formValues) {
+  return async (dispatch, getState) => {
+    // 20231101 axios未设置对，withcreditial也设置了，但就是无法发送session数据，所以底下的登录也无法发送session和fetch共享
+    await fetch("http://localhost:3001/auth/trylogin", {
+      method: "post",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .catch(error => {
+        console.log("session login error" + error);
+        dispatch(showSnackbar({ severity: "error", message: error.message }));
+      })
+      .then(response => {
+        if (!response || response.status >= 400) {
+          dispatch(showSnackbar({ severity: "info", message: "Session response.status >= 400 Error" }));
+          dispatch(LoginUser(formValues));
+        }
+
+        return response.json();
+      })
+      .then(data => {
+        console.log("session login response:" + JSON.stringify(data));
+
+        // [TODO]TypeError: Cannot read properties of undefined (reading 'token')
+        dispatch(
+          slice.actions.logIn({
+            isLoggedIn: true,
+            token: data.token,
+            // user_id: response.data.user_id,
+          })
+        );
+
+        dispatch(
+          showSnackbar({ severity: "success", message: data.message })
+        );
+
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: false })
+        );
+        console.log("session login success")
+      });
+  };
+}
+
 export function LoginUser(formValues) {
   return async (dispatch, getState) => {
     // Make API call here
@@ -126,20 +172,20 @@ export function LoginUser(formValues) {
     //   data: {...formValues},
     //   withCredentials: true
     // })
-    
+
     // 20231102 原因竟然是localhost的问题，axios实例使用的是ip地址，ip和localhost区别？？？
     // wlan登录需要设置为ip，设为localhost仅为测试session，跨域session仍是个问题
     await axios.post("http://localhost:3001/auth/login",
-        {
-          ...formValues,
-        },
-        {
-          withCredentials: true,
-          headers: {
-              'Content-Type': 'application/json'
-          }
+      {
+        ...formValues,
+      },
+      {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json'
         }
-      )
+      }
+    )
       .then(function (response) {
         console.log("login response:" + response);
         if (!response || response.status !== 200) {
@@ -157,7 +203,7 @@ export function LoginUser(formValues) {
 
         window.localStorage.setItem("user_id", response.data.user_id);
         dispatch(
-          showSnackbar({ severity: "success", message: response.data.message})
+          showSnackbar({ severity: "success", message: response.data.message })
         );
         dispatch(
           slice.actions.updateIsLoading({ isLoading: false, error: false })
