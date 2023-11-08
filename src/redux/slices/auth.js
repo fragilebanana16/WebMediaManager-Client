@@ -135,6 +135,7 @@ export function TryLoginWithSession(formValues) {
         if (!response || response.status >= 400) {
           dispatch(showSnackbar({ severity: "info", message: "Session response.status >= 400 Error" }));
           dispatch(LoginUser(formValues));
+          return;
         }
 
         return response.json();
