@@ -5,7 +5,7 @@ import { useTheme, styled } from "@mui/material/styles";
 import { Search, SearchIconWrapper, StyledInputBase, } from "../../components/Search";
 import ChatElement from "../../components/ChatElement";
 import { ChatList } from "../../data";
-import Friends from "../../sections/Friends";
+import FindFriends from "../../components/Chat/FindFriends";
 import { useDispatch, useSelector } from "react-redux";
 import { socket } from "../../utils/socket";
 import { FetchDirectConversations } from "../../redux/slices/conversation";
@@ -112,7 +112,7 @@ const Chats = () => {
                     {/* pinned */}
                     <Stack spacing={2} sx={{
                         flexflow: 1, height: "100%", overflow: "hidden",
-                        overflowY: "scroll",
+                        overflowY: "auto",
                         '&::-webkit-scrollbar': {
                             width: '0.4em',
                         },
@@ -155,7 +155,7 @@ const Chats = () => {
                 </Stack>
             </Box>
             {openDialog && (
-                <Friends open={openDialog} handleClose={handleCloseDialog} />
+                <FindFriends open={openDialog} handleClose={handleCloseDialog} />
             )}
         </>
     );

@@ -54,7 +54,7 @@ const HomeApp = () => {
     <Card sx={() => ({
       display:"flex",
       height:"250px",
-      backgroundImage: `url(${gif})`,
+      // backgroundImage: `url(${gif})`,
       backgroundSize: "cover",
       backgroundPosition: "50%",
       zIndex: 1

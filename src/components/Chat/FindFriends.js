@@ -1,15 +1,16 @@
 import React, { useEffect } from "react";
-import { Dialog, DialogContent, Slide, Stack, Tab, Tabs } from "@mui/material";
+import { Dialog, DialogContent, Slide, Stack, Tab, Tabs, Box, Fade } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
 import {
   FetchFriendRequests,
   FetchFriends,
   FetchUsers,
-} from "../redux/slices/app";
-import { FriendElement, FriendRequestElement, UserElement } from "../components/UserElement";
+} from "../../redux/slices/app";
+import { FriendElement, FriendRequestElement, UserElement } from "../UserElement";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
+  return <Fade ref={ref} {...props} />;
 });
 
 const UsersList = () => {
@@ -23,7 +24,11 @@ const UsersList = () => {
 
   return (
     <>
-      {users.map((el, idx) => {
+    <UserElement key={"idx1"} name={"Fake1"} />
+    <UserElement key={"idx2"} name={"Fake2"} />
+    <UserElement key={"idx3"} name={"Fake3"} />
+    <UserElement key={"idx4"} name={"Fake4"} />
+    {users.map((el, idx) => {
         return <UserElement key={idx} {...el} />;
       })}
     </>
@@ -42,6 +47,11 @@ const FriendsList = () => {
       {friends.map((el, idx) => {
         return <FriendElement key={idx} {...el} />;
       })}
+
+      <FriendElement key={"idx1"} name={"Fake1"} />
+    <FriendElement key={"idx2"} name={"Fake2"} />
+    <FriendElement key={"idx3"} name={"Fake3"} />
+    <FriendElement key={"idx4"} name={"Fake4"} />
     </>
   );
 };
@@ -64,9 +74,9 @@ const RequestsList = () => {
   );
 };
 
-const Friends = ({ open, handleClose }) => {
+const FindFriends = ({ open, handleClose }) => {
   const [value, setValue] = React.useState(0);
-
+  const theme = useTheme();
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -83,7 +93,7 @@ const Friends = ({ open, handleClose }) => {
       sx={{ p: 4 }}
     >
       {/* <DialogTitle>{"Friends"}</DialogTitle> */}
-      <Stack p={2} sx={{ width: "100%" }}>
+      <Stack p={1} sx={{ width: "100%" }}>
         <Tabs value={value} onChange={handleChange} centered>
           <Tab label="Explore" />
           <Tab label="Friends" />
@@ -92,7 +102,26 @@ const Friends = ({ open, handleClose }) => {
       </Stack>
       <DialogContent>
         <Stack sx={{ height: "100%" }}>
-          <Stack spacing={2.4}>
+          <Stack spacing={1} sx={{ height: "200px" ,
+                        position: "relative",
+                        flexGrow: 1,
+                        overflow: "hidden",
+                        overflowY: "auto",
+                        '&::-webkit-scrollbar': {
+                            width: '0.4em',
+                        },
+                        '&::-webkit-scrollbar-track': {
+                            background: theme.palette.mode === "light" ? "#f1f1f1" : theme.palette.background.paper,
+                            borderRadius: '100vw',
+                        },
+                        '&::-webkit-scrollbar-thumb': {
+                            backgroundColor: theme.palette.mode === "light" ? '#8885' : '#8884',
+                            borderRadius: '100vw',
+                        },
+                        '&::-webkit-scrollbar-thumb:hover': {
+                            background: theme.palette.mode === "light" ? '#888' : '#8888',
+                        },
+                    }}>
             {(() => {
               switch (value) {
                 case 0: // display all users in this list
@@ -115,4 +144,4 @@ const Friends = ({ open, handleClose }) => {
   );
 };
 
-export default Friends;
+export default FindFriends;

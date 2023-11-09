@@ -107,7 +107,7 @@ const Contact = () => {
                         position: "relative",
                         flexGrow: 1,
                         overflow: "hidden",
-                        overflowY: "scroll",
+                        overflowY: "auto",
                         '&::-webkit-scrollbar': {
                             width: '0.4em',
                         },
