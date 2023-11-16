@@ -7,7 +7,7 @@ import {
   FetchFriends,
   FetchUsers,
 } from "../../redux/slices/app";
-import { FriendElement, FriendRequestElement, UserElement } from "../UserElement";
+import { FriendElement, FriendRequestElement, UserElement } from "./UserElement";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Fade ref={ref} {...props} />;
@@ -24,7 +24,7 @@ const UsersList = () => {
 
   return (
     <>
-    <UserElement key={"idx1"} name={"Fake1"} />
+    <UserElement key={"idx1"} name={"Fake1"} _id={"test_add_id"}/>
     <UserElement key={"idx2"} name={"Fake2"} />
     <UserElement key={"idx3"} name={"Fake3"} />
     <UserElement key={"idx4"} name={"Fake4"} />

@@ -10,7 +10,10 @@ import {
 } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
 import { Chat } from "phosphor-react";
-import { socket } from "../utils/socket";
+import { showSnackbar } from "../../redux/slices/app";
+import { socket, connectSocket } from "../../utils/socket";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const user_id = window.localStorage.getItem("user_id");
 
@@ -51,8 +54,8 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 const UserElement = ({ img, name, online, _id }) => {
   const theme = useTheme();
-
   const userName = `${name}`;
+  const dispatch = useDispatch();
 
   return (
     <StyledChatBox
@@ -90,9 +93,12 @@ const UserElement = ({ img, name, online, _id }) => {
         <Stack direction={"row"} spacing={2} alignItems={"center"}>
           <Button
             onClick={() => {
-              socket.emit("friend_request", { to: _id, from: user_id }, () => {
-                alert("request sent");
-              });
+              socket.emit("friend_request", { to: _id, from: user_id },
+                ({ errorMsg }) => {
+                  dispatch(
+                    showSnackbar({ severity: "success", message: errorMsg })
+                  );
+                });
             }}
           >
             Send Request

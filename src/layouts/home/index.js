@@ -13,7 +13,7 @@ const HomeLayout = () => {
 
   return (
     <>
-      <Box sx={{backgroundColor: "#10131a",width:"100%" , height:"100%"}}>
+      <Box sx={{backgroundColor: "#10131a",width:"100vw" , height:"100vh"}}>
         <Outlet />
       </Box>
     </>
