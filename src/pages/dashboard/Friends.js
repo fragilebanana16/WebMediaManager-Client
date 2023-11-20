@@ -2,7 +2,6 @@ import { useTheme } from "@emotion/react";
 import { Box, Button, Divider, IconButton, Stack, Typography } from "@mui/material";
 import { Link, useSearchParams } from "react-router-dom";
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
 import Contact from "../../components/Contact";
 import Conversation from "../../components/Conversation";
 import Chats from "./Chats";
@@ -13,8 +12,9 @@ import ChatSideBar from "../../layouts/chatDashboard/ChatSideBar"
 import ChatElement from "../../components/ChatElement";
 import { ArchiveBox, CircleDashed, MagnifyingGlass, Users, } from "phosphor-react";
 import { Search, SearchIconWrapper, StyledInputBase, } from "../../components/Search";
+import { useDispatch, useSelector } from "react-redux";
 
-const friends = [
+const dummyFriendsData = [
   {    id: 1,    name: "dickens",    msg: "hihihi",    time: "09:55",    unread: 2  },  
   {    id: 2,    name: "tom",    msg: "dadada",    time: "18:23",    unread: 33  },  
   {    id: 3,    name: "Nom",    msg: "dadada",    time: "18:23",    unread: 33  }, 
@@ -26,24 +26,29 @@ const friends = [
   {    id: 9,    name: "Az",    msg: "xiebro",    time: "18:23",    unread: 33  }, 
 ]
 
-const grouped = friends.reduce(
-  (groupedRows, row) => {
-    const firstLetter = row.name.slice(0, 1).toUpperCase();
-    return {
-      ...groupedRows,
-      [firstLetter]: [...(groupedRows[firstLetter] || []), row]
-    }
-  }, {}
-)
+// Arranged by alphabet friends list
+const GetFriendsInAlphaOrder = (friends) => {
+  if(!friends){
+    return;
+  }
+
+  const grouped = friends.reduce(
+    (groupedRows, row) => {
+      const firstLetter = row.name.slice(0, 1).toUpperCase();
+      return {
+        ...groupedRows,
+        [firstLetter]: [...(groupedRows[firstLetter] || []), row]
+      }
+    }, {}
+  )
+
+  return Object.keys(grouped).map((key) => [key, grouped[key]]).sort();
+}
 
 const Friends = () => {
+  const { friends } = useSelector((state) => state.app);
   const theme = useTheme();
-  const groupedByAlpha = Object.keys(grouped).map((key) => [key, grouped[key]]).sort();
-  useEffect(() => {
-    console.log(groupedByAlpha);
-    console.log(groupedByAlpha.length);
-  }, [])
-
+  const groupedByAlpha = GetFriendsInAlphaOrder([...friends, ...dummyFriendsData]);
   return (
     <Stack direction={"row"} sx={{ width: "100%" }}>
       <ChatSideBar />
@@ -112,17 +117,16 @@ const Friends = () => {
             </Stack>
 
             <Stack spacing={2.4}>
-              {groupedByAlpha.map((el) => {
-                console.log("grop" + el[0])
-                return <>
+              {groupedByAlpha.map((el, idx) => {
+                return <Box key={idx} >
                   <Typography variant="subtitle2" sx={{ color: "#676767" }}>
                     {el[0]}
                   </Typography>
 
                   {el[1].map((el, idx) => {
-                    return <ChatElement key={el.id} {...el} />;
+                    return <ChatElement  key={idx} {...el} />;
                   })}
-                </>
+                </Box>
               })}
             </Stack>
           </Stack>
