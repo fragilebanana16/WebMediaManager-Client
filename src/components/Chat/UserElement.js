@@ -93,10 +93,12 @@ const UserElement = ({ img, name, online, _id }) => {
         <Stack direction={"row"} spacing={2} alignItems={"center"}>
           <Button
             onClick={() => {
-              socket.emit("friend_request", { to: _id, from: user_id },
-                ({ errorMsg }) => {
+              socket.emit("friend_request", 
+              { to: "123456", from: user_id },
+              // { to: _id, from: user_id },
+                ({ errorMsg, severity }) => {
                   dispatch(
-                    showSnackbar({ severity: "success", message: errorMsg })
+                    showSnackbar({ severity: severity, message: errorMsg })
                   );
                 });
             }}
