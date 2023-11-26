@@ -29,19 +29,13 @@ const Chats = () => {
       }, []);
 
       useEffect(() => {
-
-        console.log("Chat use effect excute...");
         socket.emit("get_online_users",  (data) => {
           var onlineUseridsData = data.map((user) => user.userID);
           setOnlineUserIDs(onlineUseridsData)
         });
-
         
         socket.on("user_disconnected", (user_id) => {
-            console.log("user_disconnected before we have "+ onlineUserIDs.length+ " online user"); 
             setOnlineUserIDs(onlineUserIDs.filter(id => id !== user_id))
-            let nowUsers = onlineUserIDs.filter(id => id !== user_id)
-            console.log("user_disconnected now we have "+ nowUsers.length+ " online user:" + nowUsers); 
           });
 
           socket.on("user_connected", ({userSocketID, userID}) => {

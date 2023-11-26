@@ -1,7 +1,7 @@
 import { useTheme } from "@emotion/react";
 import { Box, Button, Divider, IconButton, Stack, Typography } from "@mui/material";
 import { Link, useSearchParams } from "react-router-dom";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Contact from "../../components/Contact";
 import Conversation from "../../components/Conversation";
 import Chats from "./Chats";
@@ -13,28 +13,29 @@ import ChatElement from "../../components/ChatElement";
 import { ArchiveBox, CircleDashed, MagnifyingGlass, Users, } from "phosphor-react";
 import { Search, SearchIconWrapper, StyledInputBase, } from "../../components/Search";
 import { useDispatch, useSelector } from "react-redux";
-
+import { socket } from "../../utils/socket";
+const user_id = window.localStorage.getItem("user_id");
 const dummyFriendsData = [
-  {    id: 1,    name: "dickens",    msg: "hihihi",    time: "09:55",    unread: 2  },  
-  {    id: 2,    name: "tom",    msg: "dadada",    time: "18:23",    unread: 33  },  
-  {    id: 3,    name: "Nom",    msg: "dadada",    time: "18:23",    unread: 33  }, 
-  {    id: 4,    name: "Zom",    msg: "dadada",    time: "18:23",    unread: 33  }, 
-  {    id: 5,    name: "eom",    msg: "dadada",    time: "18:23",    unread: 33  }, 
-  {    id: 6,    name: "pp",    msg: "dadada",    time: "18:23",    unread: 33  }, 
-  {    id: 7,    name: "qq",    msg: "dadada",    time: "18:23",    unread: 33  }, 
-  {    id: 8,    name: "zz",    msg: "dadada",    time: "18:23",    unread: 33  }, 
-  {    id: 9,    name: "Az",    msg: "xiebro",    time: "18:23",    unread: 33  }, 
+  { id: 1, username: "dickens", msg: "hihihi", time: "09:55", unread: 2 },
+  { id: 2, username: "tom", msg: "dadada", time: "18:23", unread: 33 },
+  { id: 3, username: "Nom", msg: "dadada", time: "18:23", unread: 33 },
+  { id: 4, username: "Zom", msg: "dadada", time: "18:23", unread: 33 },
+  { id: 5, username: "eom", msg: "dadada", time: "18:23", unread: 33 },
+  { id: 6, username: "pp", msg: "dadada", time: "18:23", unread: 33 },
+  { id: 7, username: "qq", msg: "dadada", time: "18:23", unread: 33 },
+  { id: 8, username: "zz", msg: "dadada", time: "18:23", unread: 33 },
+  { id: 9, username: "Az", msg: "xiebro", time: "18:23", unread: 33 },
 ]
 
 // Arranged by alphabet friends list
 const GetFriendsInAlphaOrder = (friends) => {
-  if(!friends){
+  if (!friends) {
     return;
   }
 
   const grouped = friends.reduce(
     (groupedRows, row) => {
-      const firstLetter = row.name.slice(0, 1).toUpperCase();
+      const firstLetter = row.username.slice(0, 1).toUpperCase();
       return {
         ...groupedRows,
         [firstLetter]: [...(groupedRows[firstLetter] || []), row]
@@ -46,9 +47,37 @@ const GetFriendsInAlphaOrder = (friends) => {
 }
 
 const Friends = () => {
-  const { friends } = useSelector((state) => state.app);
+  // const { friends } = useSelector((state) => state.app);
+
+  const [friends, setFriends] = useState([]);
+
   const theme = useTheme();
-  const groupedByAlpha = GetFriendsInAlphaOrder([...friends, ...dummyFriendsData]);
+  // const groupedByAlpha = GetFriendsInAlphaOrder([...friends, ...dummyFriendsData]);
+
+  useEffect(() => {
+    socket.emit("get_friends", user_id, (friends) => {
+      const groupedByAlpha = GetFriendsInAlphaOrder(friends);
+      setFriends(groupedByAlpha);
+      console.log("get_friends callback here ", groupedByAlpha)
+    });
+
+    socket.on("user_disconnected", (_) => {
+      socket.emit("get_friends", user_id, (friends) => {
+        const groupedByAlpha = GetFriendsInAlphaOrder(friends);
+        setFriends(groupedByAlpha);
+      });
+    });
+
+    socket.on("user_connected", ({ userSocketID, userID }) => {
+      socket.emit("get_friends", user_id, (friends) => {
+        const groupedByAlpha = GetFriendsInAlphaOrder(friends);
+        setFriends(groupedByAlpha);
+      }
+      );
+    }
+    )
+  }, []);
+
   return (
     <Stack direction={"row"} sx={{ width: "100%" }}>
       <ChatSideBar />
@@ -117,14 +146,14 @@ const Friends = () => {
             </Stack>
 
             <Stack spacing={2.4}>
-              {groupedByAlpha.map((el, idx) => {
+              {friends.map((el, idx) => {
                 return <Box key={idx} >
                   <Typography variant="subtitle2" sx={{ color: "#676767" }}>
                     {el[0]}
                   </Typography>
 
                   {el[1].map((el, idx) => {
-                    return <ChatElement  key={idx} {...el} />;
+                    return <ChatElement key={idx} {...el} />;
                   })}
                 </Box>
               })}
