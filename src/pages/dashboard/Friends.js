@@ -8,7 +8,7 @@ import Chats from "./Chats";
 import StarredMessages from "../../components/StarredMessages"
 import Media from "../../components/SharedMessages";
 import NoChat from "../../assets/Illustration/NoChat";
-import ChatSideBar from "../../layouts/chatDashboard/ChatSideBar"
+import ChatSideBar from "../../layouts/chat/ChatSideBar"
 import ChatElement from "../../components/ChatElement";
 import { ArchiveBox, CircleDashed, MagnifyingGlass, Users, } from "phosphor-react";
 import { Search, SearchIconWrapper, StyledInputBase, } from "../../components/Search";
@@ -68,7 +68,7 @@ const Friends = () => {
       });
     });
 
-    socket.on("user_connected", ({ userSocketID, userID }) => {
+    socket.on("user_connected", ({ userStatus, userName, userId }) => {
       socket.emit("get_friends", user_id, (friends) => {
         const groupedByAlpha = GetFriendsInAlphaOrder(friends);
         setFriends(groupedByAlpha);

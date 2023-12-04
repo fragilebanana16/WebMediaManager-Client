@@ -9,7 +9,7 @@ import Chats from "./Chats";
 import StarredMessages from "../../components/StarredMessages"
 import Media from "../../components/SharedMessages";
 import NoChat from "../../assets/Illustration/NoChat";
-import ChatSideBar from "../../layouts/chatDashboard/ChatSideBar"
+import ChatSideBar from "../../layouts/chat/ChatSideBar"
 const ChatApp = () => {
   const theme = useTheme();
   const { sideBar, room_id, chat_type } = useSelector((state) => state.app);

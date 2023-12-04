@@ -197,6 +197,7 @@ const Footer = () => {
 
     const onSendMsg = () => {
         console.log("client send button click." + "current_conversation:" + JSON.stringify(current_conversation));
+        console.log("value:", linkify(value));
         socket.emit("text_message", {
             message: linkify(value),
             conversation_id: room_id,

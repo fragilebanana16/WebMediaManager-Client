@@ -12,6 +12,7 @@ import { FetchDirectConversations } from "../../redux/slices/conversation";
 const user_id = window.localStorage.getItem("user_id");
 const Chats = () => {
     const dispatch = useDispatch();
+    const { room_id } = useSelector((state) => state.app);
     const theme = useTheme();
     const [openDialog, setOpenDialog] = useState(false);
     const [filterOnloneConversations, setFilterOnloneConversations] = useState();
@@ -21,9 +22,10 @@ const Chats = () => {
 
 
     useEffect(() => {
-        socket.emit("get_direct_conversations", { user_id }, (data) => {
+        socket.emit("get_direct_conversations", { user_id, room_id }, (data) => {
         //   console.log(data); // this data is the list of conversations
           // dispatch action
+          console.log("get_direct_conversations:", data)
           dispatch(FetchDirectConversations({ conversations: data }));
         });
       }, []);

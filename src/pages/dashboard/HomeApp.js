@@ -170,10 +170,10 @@ const HomeApp = () => {
                 <NaviTab title="Admin" detail="Administration Page" path="/admin" icon={<AdminPanelSettings sx={{ fontSize: 50, mt: 1 }} />} />
               </Grid>
               <Grid item xs={12} sm={6} lg={6}              >
-                <NaviTab title="Games" detail="Game poster" path="/admin" icon={<SportsEsports sx={{ fontSize: 50, mt: 1 }} />} />
+                <NaviTab title="Games" detail="Game poster" path="/game" icon={<SportsEsports sx={{ fontSize: 50, mt: 1 }} />} />
               </Grid>
               <Grid item xs={12} sm={6} lg={6}              >
-                <NaviTab title="Todo" detail="Others" path="/admin" icon={<LiveTv sx={{ fontSize: 50 }} />} />
+                <NaviTab title="Music" detail="Spotify Clone" path="/music" icon={<LiveTv sx={{ fontSize: 50 }} />} />
               </Grid>
             </Grid>
           </Grid>

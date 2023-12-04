@@ -2,14 +2,16 @@ import { Suspense, lazy } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 
 // layouts
-import ChatDashboardLayout from "../layouts/chatDashboard";
+import ChatDashboardLayout from "../layouts/chat";
 
 // config
 import { DEFAULT_PATH,DEFAULT_VIDEOS_PATH, DEFAULT_ADMIN_PATH } from "../config";
 import LoadingScreen from "../components/LoadingScreen";
 import MainLayout from "../layouts/main";
 import VideosLayout from "../layouts/videos";
-import AdminDashboardLayout from "../layouts/adminDashboard";
+import AdminDashboardLayout from "../layouts/admin";
+import MusicDashboard from "../layouts/music";
+import GameDashboard from "../layouts/game";
 import FilesLayout from "../layouts/files";
 import HomeLayout from "../layouts/home";
 const Loadable = (Component) => (props) => {
@@ -72,6 +74,26 @@ export default function Router() {
       ],
     },
 
+    {
+      path: "/music",
+      element: <MusicDashboard/>, 
+      children: [
+        // /admin default to /admin/managment
+        { element: <Navigate to="musicHome" replace />, index: true },
+        { path: "musicHome", element: <MusicApp /> },
+      ],
+    },
+
+    {
+      path: "/game",
+      element: <GameDashboard/>, 
+      children: [
+        // /admin default to /admin/managment
+        { element: <Navigate to="gameHome" replace />, index: true },
+        { path: "gameHome", element: <GameApp /> },
+      ],
+    },
+
     // place the outlet in DashboardLayout, and then only the children will be rerendered
     {
       path: "/chat",
@@ -109,6 +131,14 @@ const FilesApp = Loadable(
 
 const AdminHome = Loadable(
   lazy(() => import("../pages/Admin/AdminHome")),
+);
+
+const MusicApp = Loadable(
+  lazy(() => import("../pages/dashboard/MusicApp")),
+);
+
+const GameApp = Loadable(
+  lazy(() => import("../pages/dashboard/GameApp")),
 );
 
 const Watch = Loadable(
