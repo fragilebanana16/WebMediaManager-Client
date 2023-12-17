@@ -53,6 +53,21 @@ const Nav_Buttons = [
   },
 ];
 
+const Spotify_Nav_Buttons = [
+  {
+    index: 0,
+    text: "Home",
+  },
+  {
+    index: 1,
+    text: "Home2",
+  },
+  {
+    index: 2,
+    text: "Home3",
+  },
+];
+
 const Nav_Setting = [
   {
     index: 3,
@@ -475,6 +490,7 @@ export {
   Profile_Menu,
   Nav_Setting,
   Nav_Buttons,
+  Spotify_Nav_Buttons,
   ChatList,
   Chat_History,
   Message_options,

@@ -81,6 +81,7 @@ export default function Router() {
         // /admin default to /admin/managment
         { element: <Navigate to="musicHome" replace />, index: true },
         { path: "musicHome", element: <MusicApp /> },
+        { path: "chordsTable", element: <ChordsTable /> },
       ],
     },
 
@@ -163,6 +164,10 @@ const NewPasswordPage = Loadable(
 
 const Friends = Loadable(
   lazy(() => import("../pages/dashboard/Friends")),
+);
+
+const ChordsTable = Loadable(
+  lazy(() => import("../pages/dashboard/ChordsTable")),
 );
 
 const Settings = Loadable(

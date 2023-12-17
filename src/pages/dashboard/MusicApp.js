@@ -9,7 +9,7 @@ const MusicApp = () => {
   const theme = useTheme();
   return (
     <Stack>
-        <Spotify></Spotify>
+      <Spotify />
     </Stack>
   );
 };

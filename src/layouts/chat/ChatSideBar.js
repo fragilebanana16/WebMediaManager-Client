@@ -155,10 +155,11 @@ const ChatSideBar = () => {
                   selected === el.index ? theme.palette.primary.darker : 'transparent', borderRadius: 1.5,
                 }}>
                   <IconButton onClick={() => {
-                    navi(getPath(el.index),{
-                    state: {
-                      selectedIndex: el.index,
-      }   }   );
+                    navi(getPath(el.index), {
+                      state: {
+                        selectedIndex: el.index,
+                      }
+                    });
 
                   }}
                     sx={{
