@@ -63,7 +63,7 @@ export default function AdminHome() {
 
       <NumberInfo></NumberInfo>
       <div className="homeWidgets">
-      <WatchBoard title={"Recently Add Movies"}></WatchBoard>
+      <WatchBoard title={"Add Movies"}></WatchBoard>
       <WatchBoard title={"Recently Add Music"}></WatchBoard>
       <WatchBoard title={"Recently Add Books"}></WatchBoard>
       <WatchBoard title={"Recently Add Others"}></WatchBoard>
