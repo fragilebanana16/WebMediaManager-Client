@@ -92,6 +92,7 @@ export default function Router() {
         // /admin default to /admin/managment
         { element: <Navigate to="gameHome" replace />, index: true },
         { path: "gameHome", element: <GameApp /> },
+        { path: "gameHome/toDoList", element: <ToDoList /> },
       ],
     },
 
@@ -140,6 +141,10 @@ const MusicApp = Loadable(
 
 const GameApp = Loadable(
   lazy(() => import("../pages/dashboard/GameApp")),
+);
+
+const ToDoList = Loadable(
+  lazy(() => import("../pages/dashboard/ToDoList")),
 );
 
 const Watch = Loadable(

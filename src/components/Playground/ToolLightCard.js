@@ -15,6 +15,9 @@ import PropTypes from 'prop-types';
 // styles
 const CardWrapper = styled(MainCard)(({ theme }) => ({
     overflow: 'hidden',
+    ":hover":{
+        cursor: 'pointer',
+    },
     position: 'relative',
     '&:after': {
         content: '""',

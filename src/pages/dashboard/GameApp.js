@@ -9,6 +9,7 @@ import { styled } from "@mui/material/styles";
 import Paper from '@mui/material/Paper';
 // types
 import PropTypes from 'prop-types';
+import { useNavigate } from "react-router-dom"
 
 // material-ui
 import { Box, Stack, Card, Grid, CardContent, CardHeader, Divider, Typography, List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
@@ -23,10 +24,16 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const toolNames =new Array("Json Convert","Code to Img","Todo List", "My Games");
+const toolNames ={
+  "Json Convert": "/",
+  "Code to Img": "/",
+  "Todo List": "toDoList",
+  "My Games": "/",
+};
 
 const GameApp = () => {
   const [isLoading, setLoading] = useState(true);
+  const navi = useNavigate();
 
   useEffect(() => {
     setLoading(false);
@@ -45,9 +52,9 @@ const GameApp = () => {
         </Search>
 
         <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} >
-          {toolNames.map((name, index) => (
-            <Grid item xs={2} sm={3} md={3} key={index}>
-              <ToolLightCard isLoading={isLoading} mainTitle={name} subTitle={index}/>
+          {Object.keys(toolNames).map((key, index) => (
+            <Grid item xs={2} sm={3} md={3} key={index} onClick={() => { console.log(navi(toolNames[key])) }}>
+              <ToolLightCard isLoading={isLoading} mainTitle={key} subTitle={index}/>
             </Grid>
           ))}
         </Grid>
