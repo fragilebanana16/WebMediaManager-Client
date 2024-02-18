@@ -16,8 +16,8 @@ export default function Post({_id,title,summary,cover,content,createdAt,author})
         <h2>{title}</h2>
         </Link>
         <p className="info">
-          <a className="author">{author.username}</a>
           <time>{new Date(createdAt).toLocaleString()}</time>
+          <a className="author">{author}</a>
         </p>
         <p className="summary">{summary}</p>
       </div>
@@ -27,16 +27,38 @@ export default function Post({_id,title,summary,cover,content,createdAt,author})
   );
 }
 const Container = styled.div`
+div.post{
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+h2{
+  width: 550px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.summary {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 3;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+
 div.post div.texts h2{
     margin:0;
-    font-size: 2rem;
+    font-size: 1.6rem;
 }
 div.post div.texts a{
     text-decoration:none;
     color: inherit;
 }
 div.post p.info{
-    margin:24px 0;
+    margin:4px 0;
     color: #888;
     font-size:1rem;
     font-weight: bold;
