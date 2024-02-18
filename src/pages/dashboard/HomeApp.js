@@ -12,7 +12,7 @@ import Logo from "../../assets/Images/logo.ico"
 import gif from "../../assets/Images/cardimgfree.png";
 import Grid from "@mui/material/Grid";
 import MusicMiniControl from "../../components/music/MusicMiniControl";
-import { LiveTv, Textsms, CloudUpload, AdminPanelSettings, SportsEsports } from '@mui/icons-material';
+import { LiveTv, Textsms, CloudUpload, AdminPanelSettings, SportsEsports, Notes } from '@mui/icons-material';
 const Item = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   border: '1px solid',
@@ -173,7 +173,10 @@ const HomeApp = () => {
                 <NaviTab title="Games" detail="Game poster" path="/game" icon={<SportsEsports sx={{ fontSize: 50, mt: 1 }} />} />
               </Grid>
               <Grid item xs={12} sm={6} lg={6}              >
-                <NaviTab title="Music" detail="Spotify Clone" path="/music" icon={<LiveTv sx={{ fontSize: 50 }} />} />
+                <NaviTab title="Music" detail="Spotify Clone" path="/music" icon={<LiveTv sx={{ fontSize: 50, mt: 1 }} />} />
+              </Grid>
+              <Grid item xs={12} sm={6} lg={6}              >
+                <NaviTab title="Blog" detail="Blog Note" path="/blog" icon={<Notes sx={{ fontSize: 50, mt: 1 }} />} />
               </Grid>
             </Grid>
           </Grid>

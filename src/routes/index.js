@@ -14,6 +14,7 @@ import MusicDashboard from "../layouts/music";
 import GameDashboard from "../layouts/game";
 import FilesLayout from "../layouts/files";
 import HomeLayout from "../layouts/home";
+import BlogLayout from "../layouts/blog";
 const Loadable = (Component) => (props) => {
   return (
     <Suspense fallback={<LoadingScreen />}>
@@ -86,6 +87,16 @@ export default function Router() {
     },
 
     {
+      path: "/blog",
+      element: <BlogLayout/>, 
+      children: [
+
+        { path: "/blog", element: <BlogApp /> },
+        { path: "createPost", element: <BlogCreatePost /> },
+      ],
+    },
+
+    {
       path: "/game",
       element: <GameDashboard/>, 
       children: [
@@ -118,6 +129,14 @@ export default function Router() {
 
 const HomeApp = Loadable(
   lazy(() => import("../pages/dashboard/HomeApp")),
+);
+
+const BlogApp = Loadable(
+  lazy(() => import("../pages/dashboard/BlogApp")),
+);
+
+const BlogCreatePost = Loadable(
+  lazy(() => import("../pages/dashboard/BlogCreatePost")),
 );
 
 const ChatApp = Loadable(
