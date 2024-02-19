@@ -9,7 +9,6 @@ import { LogoutUser } from "../../redux/slices/auth";
 
 export default function Header() {
   //   const {setUserInfo,userInfo} = useContext();
-  const { setUserInfo, userInfo } = useState();
   const { name } = useSelector((state) => state.app.user);
   const dispatch = useDispatch();
   const navi = useNavigate();
@@ -50,7 +49,7 @@ export default function Header() {
           {name && (
             <>
               <Link to="/blog/createPost">Create new post</Link>
-              <div class="avatar">
+              <div className="avatar">
                 <a onClick={handleClick} title={name}>
                   <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/751678/skytsunami.png" alt="ooo" />
                 </a>

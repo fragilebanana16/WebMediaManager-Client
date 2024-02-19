@@ -21,7 +21,7 @@ const BlogApp = () => {
   return (
     <Container>
       {posts.length > 0 && posts.map(post => (
-        <Post {...post} />
+        <Post key={post._id} {...post} />
       ))}
    
   </Container>
