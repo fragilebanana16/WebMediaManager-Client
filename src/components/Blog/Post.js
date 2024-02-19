@@ -8,7 +8,7 @@ export default function Post({_id,title,summary,cover,content,createdAt,author})
     <div className="post">
       <div className="image">
         <Link to={`/post/${_id}`}>
-          <img src={'http://localhost:3001/'+cover} alt=""/>
+          <img crossOrigin="anonymous" src={'http://localhost:3001/upload/'+cover} alt=""/>
         </Link>
       </div>
       <div className="texts">
@@ -73,9 +73,13 @@ div.post p.summary{
     line-height: 1.8rem;
 }
 
+img {
+    height: 100%;
+    width: 100%;
+} 
+
 div.image{
-    max-height:300px;
-    display: flex;
+    height:210px;
     overflow:hidden;
 }
 `;
